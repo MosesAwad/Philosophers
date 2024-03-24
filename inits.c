@@ -41,6 +41,7 @@ void	init_philos(t_program *program)
 		handle_mutexes(&(program->philos[i].philo_mutex), INIT);
 		program->philos[i].philo_full = false;
 		program->philos[i].program = program;
+		program->philos[i].last_meal_time = 0;
 		i++;
 	}
 }
@@ -68,8 +69,6 @@ void	init_program(t_program *program, char *argv[])
 	else
 		program->meal_limit = -1;
 	program->forks = ft_alloc(sizeof(t_fork) * program->philo_amnt);
-	program->lmt_init_count = 0;
-	program->all_threads_ready = false;
 	program->game_over = false;
 	init_forks(program->forks, program->philo_amnt);
 	program->philos = ft_alloc(sizeof(t_philo) * program->philo_amnt);

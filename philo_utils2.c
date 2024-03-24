@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 00:08:23 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/23 00:13:58 by mawad            ###   ########.fr       */
+/*   Updated: 2024/03/24 03:07:37 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,3 +122,15 @@ void	ft_usleep(size_t usec, t_program *program)
 		}
 	}
 }
+
+// void	ft_usleep(size_t usec, t_program *program)
+// {
+// 	size_t	start;
+// 	size_t	msec;
+
+// 	(void) program;
+// 	msec = usec / 1000;
+// 	start = get_time();
+// 	while ((get_time() - start) < msec)
+// 		usleep(500);
+// }

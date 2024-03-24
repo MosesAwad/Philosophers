@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 01:29:47 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/23 00:18:47 by mawad            ###   ########.fr       */
+/*   Updated: 2024/03/24 03:14:02 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,11 @@ void	ft_eat(t_philo *philo)
 	else
 		handle_mutexes(&(philo->left_fork->fork), LOCK);
 	write_status(philo, SECOND_FORK);
-	st_writer(&(philo->philo_mutex), &(philo->last_meal_time), get_time());
+	handle_mutexes(&(philo->program->write_mutex), LOCK);
+	handle_mutexes(&(philo->program->write_mutex), UNLOCK);
 	philo->meal_count++;
 	write_status(philo, EATING);
+	st_writer(&(philo->philo_mutex), &(philo->last_meal_time), get_time());
 	ft_usleep(philo->program->time_to_eat, philo->program);
 	handle_mutexes(&(philo->right_fork->fork), UNLOCK);
 	handle_mutexes(&(philo->left_fork->fork), UNLOCK);
@@ -126,7 +128,7 @@ void	ft_think(t_philo *philo)
 	if (die_time <= (eat_time + sleep_time))
 		return ;
 	think_time = die_time - (eat_time + sleep_time);
-	ft_usleep(0.30 * think_time, philo->program);
+	ft_usleep(0.3 * think_time, philo->program);
 }
 
 // void	write_details(t_philo *philo, t_philo_status status)

@@ -6,50 +6,17 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 01:49:34 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/23 02:04:50 by mawad            ###   ########.fr       */
+/*   Updated: 2024/03/24 03:01:18 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-//This function is there to ensure that dinner simulation begins
-///when all the threads have been created. It is just to synchornize
-//the beginining of the simulation across all philos by ensuring that
-//no one attempts to begin (aka attempt to start eating) until all
-//the threads have been created. Now whether they actually start
-//execution or not is random tbh and that we cannot control, but we
-//need to at least make sure that all the threads exist before beginning
-//to give all philos an equal chance at the start.
-//Now whether they start executing or not, ye96efel menno la rabbo, ana
-//shu da5alni? El mohem 3a6ai6o for9a w howwe yedabber 7alo. The point
-//being is if I dont have this spinlock, then some greedy ass philos might
-//start the simulation (aka attempt to eat by picking up a fork) before the
-//other philos even exist lmao.
-void	spinlock_all_threads(t_program *program)
-{
-	t_bool	reader;
-
-	reader = false;
-	while (reader == false)
-	{
-		printf("l");
-		handle_mutexes(&(program->read_mutex), LOCK);
-		reader = program->all_threads_ready;
-		handle_mutexes(&(program->read_mutex), UNLOCK);
-	}
-}
 
 void	*dinner_simulation(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	spinlock_all_threads(philo->program);
-	handle_mutexes(&(philo->program->read_mutex), LOCK);
-	st_writer(&(philo->philo_mutex),
-		&(philo->last_meal_time), get_time());
-	philo->program->lmt_init_count++;
-	handle_mutexes(&(philo->program->read_mutex), UNLOCK);
 	if (philo->philo_id % 2 == 0)
 		ft_usleep(1000, philo->program);
 	while (!game_over(philo->program))
@@ -119,16 +86,13 @@ void	dinner_commence(t_program *program)
 	int	i;
 
 	i = 0;
+	program->start_time = get_time();
 	while (i < program->philo_amnt)
 	{
 		handle_threads(&(program->philos[i].thread), dinner_simulation,
 			&(program->philos[i]), CREATE);
 		i++;
 	}
-	program->start_time = get_time();
-	handle_mutexes(&(program->read_mutex), LOCK);
-	program->all_threads_ready = true;
-	handle_mutexes(&(program->read_mutex), UNLOCK);
 	handle_threads(&(program->monitor), monitor_simulation, program, CREATE);
 	i = 0;
 	while (i < program->philo_amnt)

@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 23:31:18 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/23 00:17:52 by mawad            ###   ########.fr       */
+/*   Updated: 2024/03/24 00:58:29 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void	*monitor_simulation(void *arg);
 void	exit_err(char *message);
 void	*ft_alloc(size_t size);
 int		ft_atoi(char *str);
+void	ft_destroy(t_program *program);
 
 //philo_utils2.c
 t_bool	game_over(t_program *program);

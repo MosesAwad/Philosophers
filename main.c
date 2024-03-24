@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 22:38:43 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/23 00:06:15 by mawad            ###   ########.fr       */
+/*   Updated: 2024/03/24 01:01:58 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	main(int argc, char *argv[])
 	}
 	init_program(&program, argv);
 	dinner_commence(&program);
+	ft_destroy(&program);
 	return (0);
 }
 
