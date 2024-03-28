@@ -1,38 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_utils2.c                                     :+:      :+:    :+:   */
+/*   philo_utils_bonus2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/23 00:08:23 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/23 00:13:58 by mawad            ###   ########.fr       */
+/*   Created: 2024/03/27 00:02:25 by mawad             #+#    #+#             */
+/*   Updated: 2024/03/27 00:04:15 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
-
-//"bool_reader(&(program->read_mutex), &(program->game_over))" is just
-//too long of a line to be called in our functions later on (namely the
-//write_status, write_details (for debugging), monitor_simulation, and
-//dinner_simulation). So, to make the code look more presentable and such
-//that norminette doesn't start nagging, we create this function to make
-//the bool_reader() call even shorter.
-t_bool	game_over(t_program *program)
-{
-	return (bool_reader(&(program->read_mutex), &(program->game_over)));
-}
-
-t_bool	check_full(t_philo *philo, t_program *program)
-{
-	handle_mutexes(&(program->read_mutex), LOCK);
-	if (philo->meal_count == program->meal_limit)
-	{
-		bool_writer(&(philo->philo_mutex), &(philo->philo_full), true);
-		return (handle_mutexes(&(program->read_mutex), UNLOCK), true);
-	}
-	return (handle_mutexes(&(program->read_mutex), UNLOCK), false);
-}
+#include "philo_bonus.h"
 
 //Gives the current time in milliseconds since the UNIX epoch.
 size_t	get_time(void)

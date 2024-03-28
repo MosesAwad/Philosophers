@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 23:31:18 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/23 00:17:52 by mawad            ###   ########.fr       */
+/*   Updated: 2024/03/27 02:20:02 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,14 @@
 # include <unistd.h>
 # include <pthread.h>
 # include <stdlib.h>
+# include <limits.h>
 
 typedef struct s_program	t_program;
 
 typedef enum s_bool
 {
-	false = 0,
-	true = 1
+	FALSE = 0,
+	TRUE = 1
 }	t_bool;
 
 typedef enum s_thread_ops
@@ -81,7 +82,6 @@ typedef struct s_program
 	size_t			time_to_die;
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
-	size_t			lmt_init_count;
 	size_t			start_time;
 	t_fork			*forks;
 	t_philo			*philos;
@@ -117,10 +117,14 @@ void	init_program(t_program *program, char *argv[]);
 //monitor.c
 void	*monitor_simulation(void *arg);
 
+//parser.c
+void	parser(char *argv[]);
+
 //philo_utils.c
 void	exit_err(char *message);
 void	*ft_alloc(size_t size);
 int		ft_atoi(char *str);
+void	ft_destroy(t_program *program);
 
 //philo_utils2.c
 t_bool	game_over(t_program *program);

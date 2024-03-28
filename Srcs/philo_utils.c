@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 23:31:03 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/23 00:08:52 by mawad            ###   ########.fr       */
+/*   Updated: 2024/03/24 01:12:05 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,17 @@ int	ft_atoi(char *str)
 	while (str[i] >= '0' && str[i] <= '9')
 		result = result * 10 + (str[i++] - '0');
 	return (result * flag);
+}
+
+void	ft_destroy(t_program *program)
+{
+	int	i;
+
+	i = 0;
+	handle_mutexes(&(program->read_mutex), DESTROY);
+	handle_mutexes(&(program->write_mutex), DESTROY);
+	while (i < program->philo_amnt)
+		handle_mutexes(&(program->forks[i++].fork), DESTROY);
+	free(program->philos);
+	free(program->forks);
 }

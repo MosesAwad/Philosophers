@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 00:25:30 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/23 00:12:54 by mawad            ###   ########.fr       */
+/*   Updated: 2024/03/26 00:26:43 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,9 @@ void	init_philos(t_program *program)
 		program->philos[i].right_fork = &(program->forks[i]);
 		program->philos[i].meal_count = 0;
 		handle_mutexes(&(program->philos[i].philo_mutex), INIT);
-		program->philos[i].philo_full = false;
+		program->philos[i].philo_full = FALSE;
 		program->philos[i].program = program;
+		program->philos[i].last_meal_time = 0;
 		i++;
 	}
 }
@@ -68,9 +69,7 @@ void	init_program(t_program *program, char *argv[])
 	else
 		program->meal_limit = -1;
 	program->forks = ft_alloc(sizeof(t_fork) * program->philo_amnt);
-	program->lmt_init_count = 0;
-	program->all_threads_ready = false;
-	program->game_over = false;
+	program->game_over = FALSE;
 	init_forks(program->forks, program->philo_amnt);
 	program->philos = ft_alloc(sizeof(t_philo) * program->philo_amnt);
 	init_philos(program);
