@@ -12,6 +12,26 @@
 
 #include "philo_bonus.h"
 
+void	wait_philos(t_program *program)
+{
+	int	i;
+
+	i = 0;
+	while (i < program->philo_amnt)
+	{
+		handle_semaphores(program->wait_sem, NULL, 0, WAIT);
+		i++;
+	}
+	handle_semaphores(program->wait_sem, NULL, 0, WAIT);
+	i = 0;
+	while (i < program->philo_amnt)
+	{
+		kill(program->philos[i], SIGINT);
+		i++;
+	}
+	handle_semaphores(program->kill_sem, NULL, 0, POST);
+}
+
 int	main(int argc, char *argv[])
 {
 	t_program	program;
@@ -24,6 +44,7 @@ int	main(int argc, char *argv[])
 	parser(argv);
 	init_program(&program, argv);
 	set_up_procs(&program);
+	wait_philos(&program);
 	ft_destroy(&program);
 	return (0);
 }

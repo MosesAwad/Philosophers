@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:57:12 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/28 03:23:55 by mawad            ###   ########.fr       */
+/*   Updated: 2024/03/29 02:35:33 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,13 @@ static char	*get_sem_name(t_program *program)
 static void	dinner_simulation(t_program *program)
 {
 	char	*sem_name;
+	// size_t	elapsed;
 
-	// if (program->philo_data.philo_id % 2 == 0)
-	// 	ft_usleep(1000, program);
+	// handle_semaphores(program->write_sem, NULL, 0, WAIT);
+	// elapsed = get_time() - program->start_time;
+	// printf(PRL"philo[%d] was created at %lu\n"OG, program->philo_data.philo_id, elapsed);
+	// handle_semaphores(program->write_sem, NULL, 0, POST);
+
 	sem_name = get_sem_name(program);
 	handle_semaphores(NULL, sem_name, 0, UNLINK);
 	program->philo_data.read_sem = handle_semaphores(NULL, sem_name,
@@ -60,6 +64,7 @@ void	set_up_procs(t_program *program)
 
 	i = 0;
 	program->start_time = get_time();
+	// handle_semaphores(program->all_procs_ready_sem, NULL, 0, WAIT);
 	while (i < program->philo_amnt)
 	{
 		program->philos[i] = fork();
@@ -76,7 +81,5 @@ void	set_up_procs(t_program *program)
 		}
 		i++;
 	}
-	i = 0;
-	while (i < program->philo_amnt)
-		waitpid(program->philos[i++], NULL, 0);
+	// handle_semaphores(program->all_procs_ready_sem, NULL, 0, POST);
 }

@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 00:17:56 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/28 23:05:20 by mawad            ###   ########.fr       */
+/*   Updated: 2024/03/29 01:26:03 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <semaphore.h>
 # include <errno.h>
 # include <signal.h>
-# include <sys/wait.h>
+// # include <sys/wait.h>
 
 typedef struct s_program	t_program;
 
@@ -96,11 +96,13 @@ typedef struct s_program
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
 	size_t			start_time;
-	sem_t			*forks;
 	pid_t			*philos;
+	sem_t			*forks;
 	sem_t			*write_sem;
 	sem_t			*balance_sem;
 	sem_t			*kill_sem;
+	sem_t			*all_procs_ready_sem;
+	sem_t			*wait_sem;
 	t_philo			philo_data;
 }	t_program;
 

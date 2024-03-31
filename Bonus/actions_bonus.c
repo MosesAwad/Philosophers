@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 00:00:44 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/28 23:23:07 by mawad            ###   ########.fr       */
+/*   Updated: 2024/04/01 00:10:49 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,13 @@ void	write_status(t_program *program, t_philo_status status)
 
 	elapsed = get_time() - program->start_time;
 	handle_semaphores(program->write_sem, NULL, 0, WAIT);
-	if ((status == FIRST_FORK || status == SECOND_FORK)
+	if ((status == FIRST_FORK)
 		&& !game_over(program))
-		printf("%lu""	%d has taken a fork\n",
+		printf("%lu""	%d has taken the first fork\n",
+			elapsed, program->philo_data.philo_id);
+	else if ((status == SECOND_FORK)
+		&& !game_over(program))
+		printf("%lu""	%d has taken the second fork\n",
 			elapsed, program->philo_data.philo_id);
 	else if (status == EATING && !game_over(program))
 		printf("%lu""	%d is"" eating\n",
@@ -31,10 +35,34 @@ void	write_status(t_program *program, t_philo_status status)
 	else if (status == THINKING && !game_over(program))
 		printf("%lu""	%d is thinking\n",
 			elapsed, program->philo_data.philo_id);
-	else if (status == DEAD && !game_over(program))
-		printf("%lu""	%d died\n", elapsed, program->philo_data.philo_id);
+	else if (status == DEAD && game_over(program) == TRUE)
+		printf(RED"%lu""	%d died\n"OG, elapsed, program->philo_data.philo_id);
 	handle_semaphores(program->write_sem, NULL, 0, POST);
 }
+
+// void	write_status(t_program *program, t_philo_status status)
+// {
+// 	size_t	elapsed;
+
+// 	elapsed = get_time() - program->start_time;
+// 	handle_semaphores(program->write_sem, NULL, 0, WAIT);
+// 	if ((status == FIRST_FORK || status == SECOND_FORK)
+// 		&& !game_over(program))
+// 		printf("%lu""	%d has taken a fork\n",
+// 			elapsed, program->philo_data.philo_id);
+// 	else if (status == EATING && !game_over(program))
+// 		printf("%lu""	%d is"" eating\n",
+// 			elapsed, program->philo_data.philo_id);
+// 	else if (status == SLEEPING && !game_over(program))
+// 		printf("%lu""	%d is sleeping\n",
+// 			elapsed, program->philo_data.philo_id);
+// 	else if (status == THINKING && !game_over(program))
+// 		printf("%lu""	%d is thinking\n",
+// 			elapsed, program->philo_data.philo_id);
+// 	else if (status == DEAD && game_over(program) == TRUE)
+// 		printf(RED"%lu""	%d died\n"OG, elapsed, program->philo_data.philo_id);
+// 	handle_semaphores(program->write_sem, NULL, 0, POST);
+// }
 
 //The balance semaphore is important here because in the bonus part,
 //all the forks are placed in the middle of the table (as reflected by
@@ -71,6 +99,7 @@ void	ft_eat(t_program *program)
 	write_status(program, FIRST_FORK);
 	handle_semaphores(program->forks, NULL, 0, WAIT);
 	write_status(program, SECOND_FORK);
+	handle_semaphores(program->balance_sem, NULL, 0, POST);
 	write_status(program, EATING);
 	handle_semaphores(program->philo_data.read_sem, NULL, 0, WAIT);
 	program->philo_data.last_meal_time = get_time();
@@ -78,7 +107,6 @@ void	ft_eat(t_program *program)
 	ft_usleep(program->time_to_eat, program);
 	handle_semaphores(program->forks, NULL, 0, POST);
 	handle_semaphores(program->forks, NULL, 0, POST);
-	handle_semaphores(program->balance_sem, NULL, 0, POST);
 }
 
 void	ft_sleep(t_program *program)
@@ -91,3 +119,23 @@ void	ft_think(t_program *program)
 {
 	write_status(program, THINKING);
 }
+
+// void	ft_think(t_program *program)
+// {
+// 	size_t	think_time;
+// 	size_t	die_time;
+// 	size_t	eat_time;
+// 	size_t	sleep_time;
+
+// 	think_time = 0;
+// 	write_status(program, THINKING);
+// 	die_time = program->time_to_die;
+// 	eat_time = program->time_to_eat;
+// 	sleep_time = program->time_to_sleep;
+// 	// if (check_full(philo, philo->program))
+// 	// 	return ;
+// 	if (die_time <= (eat_time + sleep_time))
+// 		return ;
+// 	think_time = die_time - (eat_time + sleep_time);
+// 	ft_usleep(0.3 * think_time, program);
+// }
