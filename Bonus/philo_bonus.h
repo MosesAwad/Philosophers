@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 00:17:56 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/29 01:26:03 by mawad            ###   ########.fr       */
+/*   Updated: 2024/04/02 00:50:15 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ typedef struct s_program
 	sem_t			*write_sem;
 	sem_t			*balance_sem;
 	sem_t			*kill_sem;
-	sem_t			*all_procs_ready_sem;
 	sem_t			*wait_sem;
 	t_philo			philo_data;
 }	t_program;

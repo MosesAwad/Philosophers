@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 00:37:20 by mawad             #+#    #+#             */
-/*   Updated: 2024/04/01 00:17:04 by mawad            ###   ########.fr       */
+/*   Updated: 2024/04/02 00:50:07 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,9 @@ static void	init_semaphores(t_program *program)
 	handle_semaphores(NULL, "kill_sem", 0, UNLINK);
 	program->kill_sem = handle_semaphores(NULL, "kill_sem",
 			1, OPEN);
-	handle_semaphores(NULL, "all_procs_ready_sem", 0, UNLINK);
-	program->all_procs_ready_sem = handle_semaphores(NULL,
-			"all_procs_ready_sem", 1, OPEN);
 	handle_semaphores(NULL, "balance_sem", 0, UNLINK);
 	program->balance_sem = handle_semaphores(NULL, "balance_sem",
-			((program->philo_amnt) / 2), OPEN);
+			program->philo_amnt / 2, OPEN);
 }
 
 static void	init_philo(t_program *program)

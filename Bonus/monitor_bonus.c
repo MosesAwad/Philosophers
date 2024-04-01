@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 23:34:01 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/31 23:49:03 by mawad            ###   ########.fr       */
+/*   Updated: 2024/04/02 01:06:45 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ t_bool	philo_survives(t_program *program)
 	elapsed = get_time() - lmt;
 	if (elapsed > program->time_to_die / 1e3)
 	{
+		printf("the lmt is %lu for philo[%d]\n", lmt - program->start_time, program->philo_data.philo_id);
 		bool_writer(program->philo_data.end_sem, &(program->game_over), TRUE);
 		end_sim(program);
 		return (FALSE);
@@ -83,13 +84,13 @@ void	*monitor_simulation(void *arg)
 	program = (t_program *)arg;
 	while (1)
 	{
-		handle_semaphores(program->philo_data.read_sem, NULL, 0, WAIT);
+		//handle_semaphores(program->philo_data.read_sem, NULL, 0, WAIT);
 		lmt = program->philo_data.last_meal_time;
-		handle_semaphores(program->philo_data.read_sem, NULL, 0, POST);
+		//handle_semaphores(program->philo_data.read_sem, NULL, 0, POST);
 		if (lmt != 0)
 			break ;
 	}
-	while (!game_over(program))
+	while (1)
 	{
 		if (philo_survives(program) == FALSE)
 			return (NULL);

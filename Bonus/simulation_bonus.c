@@ -6,19 +6,32 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:57:12 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/29 02:35:33 by mawad            ###   ########.fr       */
+/*   Updated: 2024/04/02 01:08:22 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-static char	*get_sem_name(t_program *program)
+static char	*get_sem_name1(t_program *program)
 {
 	char	*prefix;
 	char	*number;
 	char	*sem_name;
 
-	prefix = ft_strdup("readsem");
+	prefix = ft_strdup("read_sem");
+	number = ft_itoa(program->philo_data.philo_id);
+	sem_name = ft_strjoin(prefix, number);
+	free(number);
+	return (sem_name);
+}
+
+static char	*get_sem_name2(t_program *program)
+{
+	char	*prefix;
+	char	*number;
+	char	*sem_name;
+
+	prefix = ft_strdup("end_sem");
 	number = ft_itoa(program->philo_data.philo_id);
 	sem_name = ft_strjoin(prefix, number);
 	free(number);
@@ -28,24 +41,20 @@ static char	*get_sem_name(t_program *program)
 static void	dinner_simulation(t_program *program)
 {
 	char	*sem_name;
-	// size_t	elapsed;
 
-	// handle_semaphores(program->write_sem, NULL, 0, WAIT);
-	// elapsed = get_time() - program->start_time;
-	// printf(PRL"philo[%d] was created at %lu\n"OG, program->philo_data.philo_id, elapsed);
-	// handle_semaphores(program->write_sem, NULL, 0, POST);
-
-	sem_name = get_sem_name(program);
+	sem_name = get_sem_name1(program);
 	handle_semaphores(NULL, sem_name, 0, UNLINK);
 	program->philo_data.read_sem = handle_semaphores(NULL, sem_name,
 			1, OPEN);
 	free(sem_name);
-	handle_semaphores(NULL, "end_sem", 0, UNLINK);
-	program->philo_data.end_sem = handle_semaphores(NULL, "end_sem",
+	sem_name = get_sem_name2(program);
+	handle_semaphores(NULL, sem_name, 0, UNLINK);
+	program->philo_data.end_sem = handle_semaphores(NULL, sem_name,
 			1, OPEN);
+	free(sem_name);
 	handle_threads(&(program->philo_data.monitor),
 		monitor_simulation, program, CREATE);
-	while (game_over(program) == FALSE)
+	while (1)
 	{
 		ft_eat(program);
 		ft_sleep(program);
