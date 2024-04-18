@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 23:24:40 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/26 00:26:43 by mawad            ###   ########.fr       */
+/*   Updated: 2024/04/14 19:44:13 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static t_bool	philo_lives(int i, t_program *program)
 	if (elapsed > (program->time_to_die / (size_t) 1e3)
 		&& !check_full(&(program->philos[i]), program))
 	{
-		// printf("elapsed is %lu, the result of time %lu - lmt %lu\n", elapsed, get_time(), lmt);
 		bool_writer(&(program->read_mutex),
 			&(program->game_over), TRUE);
 		write_status(&(program->philos[i]), DEAD);
@@ -61,6 +60,11 @@ static t_bool	philo_lives(int i, t_program *program)
 //So the threads have definetely been created by now, in other words, st_writer
 //here won't be writing to a philo->sub_thread that hasn't been created yet so
 //its fine.
+//The reason for usleep(1000) is explained in monitor_bonus.c above the
+//monitor_simulation() function, that function serves the same purpose as the
+//monitor_simulation () function shown below except that it's for the bonus
+//part. Also, the usage of the usleep(1000) there is the same here, so just read
+//the note there.
 void	*monitor_simulation(void *arg)
 {
 	t_program	*program;
@@ -71,8 +75,11 @@ void	*monitor_simulation(void *arg)
 	while (!game_over(program))
 	{
 		i = 0;
-		while (i < program->philo_amnt && program->philos[i].last_meal_time)
+		while (i < program->philo_amnt
+			&& st_reader(&(program->philos[i].philo_mutex),
+				&(program->philos[i].last_meal_time)))
 		{
+			ft_usleep(1000, program);
 			if (philo_lives(i, program) == FALSE)
 				return (NULL);
 			i++;

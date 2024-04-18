@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 00:27:41 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/26 00:28:01 by mawad            ###   ########.fr       */
+/*   Updated: 2024/04/02 23:58:38 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,6 @@ void	parser(char *argv[])
 	{
 		if (ft_atol(argv[5]) == 0)
 			exit_err("Setting meal limit to 0"
-				" does not result in a simulation\n");
+				" does not result in a simulation");
 	}
 }

@@ -6,7 +6,7 @@
 #    By: mawad <mawad@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 00:08:55 by mawad             #+#    #+#              #
-#    Updated: 2024/03/28 02:47:15 by mawad            ###   ########.fr        #
+#    Updated: 2024/04/13 22:03:11 by mawad            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -pthread
 
 PHILO_DIR = Srcs
-PHILO_SRCS = $(addprefix $(PHILO_DIR)/, main.c philo_utils.c philo_utils2.c handlers.c inits.c simulation.c actions.c read_write.c monitor.c parser.c)
+PHILO_SRCS = $(addprefix $(PHILO_DIR)/, main.c philo_utils.c philo_utils2.c handlers.c inits.c simulation.c actions_utils.c actions.c read_write.c monitor.c parser.c)
 
 BONUS_DIR = Bonus
 BONUS_SRCS = $(addprefix $(BONUS_DIR)/, actions_bonus.c ft_itoa_bonus.c handlers_bonus.c handlers_bonus2.c inits_bonus.c main_bonus.c monitor_bonus.c \

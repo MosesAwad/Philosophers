@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 02:06:23 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/27 01:03:35 by mawad            ###   ########.fr       */
+/*   Updated: 2024/04/08 22:19:56 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,9 @@ int	ft_atoi(char *str)
 
 void	ft_destroy(t_program *program)
 {
-	// handle_mutexes(&(program->read_mutex), DESTROY);
-	// handle_mutexes(&(program->write_mutex), DESTROY);
 	handle_semaphores(program->write_sem, NULL, 0, CLOSE);
-	// while (i < program->philo_amnt)
-	// 	handle_mutexes(&(program->forks[i++].fork), DESTROY);
+	handle_semaphores(program->wait_sem, NULL, 0, CLOSE);
 	handle_semaphores(program->forks, NULL, 0, CLOSE);
+	handle_semaphores(program->balance_sem, NULL, 0, CLOSE);
 	free(program->philos);
 }

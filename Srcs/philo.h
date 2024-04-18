@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 23:31:18 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/27 02:20:02 by mawad            ###   ########.fr       */
+/*   Updated: 2024/04/13 22:02:56 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PHILO_H
 
 # include <sys/time.h>
+# include <sys/wait.h>
 # include <errno.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -56,6 +57,7 @@ typedef enum s_philo_status
 typedef struct s_fork
 {
 	int				fork_id;
+	t_bool			value;
 	pthread_mutex_t	fork;
 }	t_fork;
 
@@ -98,6 +100,9 @@ typedef struct s_program
 # define PRL	"\033[0;35m"
 
 //main.c
+
+//actions_utils.c
+void	ft_pickup_forks(t_philo *philo);
 
 //actions.c
 void	write_details(t_philo *philo, t_philo_status status);

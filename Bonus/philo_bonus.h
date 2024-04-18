@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 00:17:56 by mawad             #+#    #+#             */
-/*   Updated: 2024/04/02 00:50:15 by mawad            ###   ########.fr       */
+/*   Updated: 2024/04/02 23:50:41 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PHILO_BONUS_H
 
 # include <sys/time.h>
+# include <sys/wait.h>
 # include <errno.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -25,7 +26,6 @@
 # include <semaphore.h>
 # include <errno.h>
 # include <signal.h>
-// # include <sys/wait.h>
 
 typedef struct s_program	t_program;
 
@@ -81,8 +81,7 @@ typedef struct s_philo
 	size_t			last_meal_time;
 	t_bool			philo_full;
 	pthread_t		monitor;
-	sem_t			*read_sem;
-	sem_t			*end_sem;
+	sem_t			*philo_sem;
 	t_program		*program;
 }		t_philo;
 
@@ -152,8 +151,9 @@ char	*ft_strdup(const char *s);
 char	*ft_strjoin(char *s1, const char *s2);
 
 //read_write_bonus.c
-t_bool	game_over(t_program *program);
+t_bool	check_full(t_program *program);
 void	bool_writer(sem_t *semaphore, t_bool *dest, t_bool new_value);
+void	size_t_writer(sem_t *semaphore, size_t *dest, size_t new_value);
 
 //simulation_bonus.c
 void	set_up_procs(t_program *program);

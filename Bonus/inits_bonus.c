@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 00:37:20 by mawad             #+#    #+#             */
-/*   Updated: 2024/04/02 00:50:07 by mawad            ###   ########.fr       */
+/*   Updated: 2024/04/08 22:26:52 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,16 @@
 
 //1. Explanation for why balance_sem's value is philo_amnt / 2 is
 //explained in the note above ft_eat in the file actions_bonus.c
-//2. Explanation for the use of the semaphore called kill_sem is
-//explained in the note above philo_survives in the file monitor_bonus.c
 static void	init_semaphores(t_program *program)
 {
-	handle_semaphores(NULL, "forks", 0, UNLINK);
-	program->forks = handle_semaphores(NULL, "forks",
+	handle_semaphores(NULL, "forks_sem", 0, UNLINK);
+	program->forks = handle_semaphores(NULL, "forks_sem",
 			program->philo_amnt, OPEN);
 	handle_semaphores(NULL, "wait_sem", 0, UNLINK);
 	program->wait_sem = handle_semaphores(NULL, "wait_sem",
-			program->philo_amnt, OPEN);
+			1, OPEN);
 	handle_semaphores(NULL, "write", 0, UNLINK);
 	program->write_sem = handle_semaphores(NULL, "write",
-			1, OPEN);
-	handle_semaphores(NULL, "kill_sem", 0, UNLINK);
-	program->kill_sem = handle_semaphores(NULL, "kill_sem",
 			1, OPEN);
 	handle_semaphores(NULL, "balance_sem", 0, UNLINK);
 	program->balance_sem = handle_semaphores(NULL, "balance_sem",

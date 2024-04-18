@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 01:29:47 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/28 02:42:27 by mawad            ###   ########.fr       */
+/*   Updated: 2024/04/13 22:04:29 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,22 +65,13 @@ void	ft_eat(t_philo *philo)
 {
 	if (check_full(philo, philo->program))
 		return ;
-	if ((philo->philo_id % 2) != 0)
-		handle_mutexes(&(philo->left_fork->fork), LOCK);
-	else
-		handle_mutexes(&(philo->right_fork->fork), LOCK);
-	write_status(philo, FIRST_FORK);
-	if ((philo->philo_id % 2) != 0)
-		handle_mutexes(&(philo->right_fork->fork), LOCK);
-	else
-		handle_mutexes(&(philo->left_fork->fork), LOCK);
-	write_status(philo, SECOND_FORK);
+	ft_pickup_forks(philo);
 	philo->meal_count++;
 	write_status(philo, EATING);
 	st_writer(&(philo->philo_mutex), &(philo->last_meal_time), get_time());
 	ft_usleep(philo->program->time_to_eat, philo->program);
-	handle_mutexes(&(philo->right_fork->fork), UNLOCK);
-	handle_mutexes(&(philo->left_fork->fork), UNLOCK);
+	bool_writer(&(philo->right_fork->fork), &(philo->right_fork->value), 0);
+	bool_writer(&(philo->left_fork->fork), &(philo->left_fork->value), 0);
 }
 
 void	ft_sleep(t_philo *philo)

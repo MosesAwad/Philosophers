@@ -6,7 +6,7 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 00:25:30 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/26 00:26:43 by mawad            ###   ########.fr       */
+/*   Updated: 2024/04/13 19:12:59 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	init_forks(t_fork *forks, int phil_amnt)
 	while (i < phil_amnt)
 	{
 		forks[i].fork_id = i;
+		forks[i].value = 0;
 		handle_mutexes(&(forks[i].fork), INIT);
 		i++;
 	}

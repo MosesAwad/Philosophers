@@ -6,36 +6,11 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 00:00:44 by mawad             #+#    #+#             */
-/*   Updated: 2024/04/02 01:03:19 by mawad            ###   ########.fr       */
+/*   Updated: 2024/04/02 23:53:39 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-// void	write_status(t_program *program, t_philo_status status)
-// {
-// 	size_t	elapsed;
-
-// 	elapsed = get_time() - program->start_time;
-// 	printf("get time from philo %d is %lu\n", program->philo_data.philo_id, get_time());
-// 	handle_semaphores(program->write_sem, NULL, 0, WAIT);
-// 	if ((status == FIRST_FORK || status == SECOND_FORK)
-// 		&& !game_over(program))
-// 		printf("%lu""	%d has taken a fork at time %lu\n",
-// 			elapsed, program->philo_data.philo_id, get_time());
-// 	else if (status == EATING && !game_over(program))
-// 		printf("%lu""	%d is"" eating at time %lu\n",
-// 			elapsed, program->philo_data.philo_id, get_time());
-// 	else if (status == SLEEPING && !game_over(program))
-// 		printf("%lu""	%d is sleeping at time %lu\n",
-// 			elapsed, program->philo_data.philo_id, get_time());
-// 	else if (status == THINKING && !game_over(program))
-// 		printf("%lu""	%d is thinking at time %lu\n",
-// 			elapsed, program->philo_data.philo_id, get_time());
-// 	else if (status == DEAD && game_over(program) == TRUE)
-// 		printf(RED"%lu""	%d died\n"OG, elapsed, program->philo_data.philo_id);
-// 	handle_semaphores(program->write_sem, NULL, 0, POST);
-// }
 
 void	write_status(t_program *program, t_philo_status status)
 {
@@ -43,21 +18,18 @@ void	write_status(t_program *program, t_philo_status status)
 
 	elapsed = get_time() - program->start_time;
 	handle_semaphores(program->write_sem, NULL, 0, WAIT);
-	if ((status == FIRST_FORK || status == SECOND_FORK)
-		&& !game_over(program))
+	if ((status == FIRST_FORK || status == SECOND_FORK))
 		printf("%lu""	%d has taken a fork\n",
 			elapsed, program->philo_data.philo_id);
-	else if (status == EATING && !game_over(program))
+	else if (status == EATING)
 		printf("%lu""	%d is"" eating\n",
 			elapsed, program->philo_data.philo_id);
-	else if (status == SLEEPING && !game_over(program))
+	else if (status == SLEEPING)
 		printf("%lu""	%d is sleeping\n",
 			elapsed, program->philo_data.philo_id);
-	else if (status == THINKING && !game_over(program))
+	else if (status == THINKING)
 		printf("%lu""	%d is thinking\n",
 			elapsed, program->philo_data.philo_id);
-	else if (status == DEAD && game_over(program) == TRUE)
-		printf(RED"%lu""	%d died\n"OG, elapsed, program->philo_data.philo_id);
 	handle_semaphores(program->write_sem, NULL, 0, POST);
 }
 
@@ -91,25 +63,37 @@ void	write_status(t_program *program, t_philo_status status)
 //inefficiency would occur.
 void	ft_eat(t_program *program)
 {
+	if (check_full(program) == TRUE)
+		return ;
 	handle_semaphores(program->balance_sem, NULL, 0, WAIT);
 	write_status(program, FIRST_FORK);
+	handle_semaphores(program->forks, NULL, 0, WAIT);
 	write_status(program, SECOND_FORK);
+	handle_semaphores(program->forks, NULL, 0, WAIT);
 	write_status(program, EATING);
-	handle_semaphores(program->philo_data.read_sem, NULL, 0, WAIT);
-	program->philo_data.last_meal_time = get_time();
-	handle_semaphores(program->philo_data.read_sem, NULL, 0, POST);
+	size_t_writer(program->philo_data.philo_sem,
+		&(program->philo_data.last_meal_time), get_time());
+	handle_semaphores(program->philo_data.philo_sem, NULL, 0, WAIT);
+	program->philo_data.meal_count++;
+	handle_semaphores(program->philo_data.philo_sem, NULL, 0, POST);
 	ft_usleep(program->time_to_eat, program);
+	handle_semaphores(program->forks, NULL, 0, POST);
+	handle_semaphores(program->forks, NULL, 0, POST);
 	handle_semaphores(program->balance_sem, NULL, 0, POST);
 }
 
 void	ft_sleep(t_program *program)
 {
+	if (check_full(program) == TRUE)
+		return ;
 	write_status(program, SLEEPING);
 	ft_usleep(program->time_to_sleep, program);
 }
 
 void	ft_think(t_program *program)
 {
+	if (check_full(program) == TRUE)
+		return ;
 	write_status(program, THINKING);
 }
 
