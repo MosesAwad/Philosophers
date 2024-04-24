@@ -6,12 +6,60 @@
 /*   By: mawad <mawad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 01:49:34 by mawad             #+#    #+#             */
-/*   Updated: 2024/03/26 23:59:35 by mawad            ###   ########.fr       */
+/*   Updated: 2024/04/24 22:52:32 by mawad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+//PAY ATTENTION!!!!
+//This 	if (philo->philo_id % 2 == 0)
+//		ft_usleep(1000, philo->program);
+//is arguably the most important line of the code! It fixes the
+//issue you face when you insert a number of philosophers larger than
+//4 like ./philo 6 410 200 200. So as you can see, the number of
+//philos isn't even that large but it is still large enough to
+//create an issue. I would recommend you plug the output of
+//your code into the philsophers_visualizer available through this
+//link:
+//https://nafuka11.github.io/philosophers-visualizer/
+//to see the issue.
+//NOTE: This issue is not always present though, it could differ from
+//one time you run the program to the other as it depends on how the
+//philos win the fights over the forks (This would hopefully make more
+//sense as you read on. but I figured it would be important to give notice
+//to this issue here). However, we should find a way to make it work every
+//time we run the program. To do that, we use this if-statement, and to see
+//why it works, read on.
+//Without this if-statement, you would notice that
+//the behavior of odd and even philsophers is at an offset, by that
+//I mean that some philsophers begin their actions really late. My
+//guess is that this is caused by us setting the rule where odd philos
+//pick up their left forks first and even philos pick up their right
+//forks first. This is good, it avoids deadlocks (if you don't understand
+//why, watch the Oceano Philosophers video on Youtube). But this implementation
+//does come at a cost, in the scenarios where we have more than 4 philos or
+//when we have an odd number of philos.
+//In those scenarios, lets say for example when you have more than 4 philos,
+//some philosophers can end up picking a fork but losing their next one, and
+//because of that fork that this philo picked up, their other neighbor also
+//couldn't eat.
+//So basically, one philosopher picked up a fork (effectively hindering
+//his neighbor), and because he lost the fight over the other fork, he
+//now hinders himself. So we end up with two hindered philsophers!
+//So to fix this issue, what we do is as soon as the simulation starts, 
+//I would make the even philosphers sleep for 1ms (1000 us), something
+//negligible, but it makes a world of a difference.
+//In that case, we would kinda be cheating for the first round, as
+//the odd number of philo's would not have any one to fight with for their
+//forks (REMEMBER: ONLY FOR THE FIRST ROUND) because we made the even philos
+//sleep. But since they all sleep for only 1ms, when they wake up, that would
+//have been enough time for the odd philos to start eating. Then, the even
+//philos wait till it becomes their turn to eat, and now, the simulation gets
+//back to normal (whereby the philos actually fight over the forks when it
+//becomes they are awake starting from the SECOND round and for every other
+//round afterwards). This steps greatly improves the synchronicity between
+//the philos and fixes the issue mentioned earlier.
 static void	*dinner_simulation(void *arg)
 {
 	t_philo	*philo;
